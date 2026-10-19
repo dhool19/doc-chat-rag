@@ -62,5 +62,5 @@ python ingest.py
 ### Run the app
 
 ``` bash
-streamlit run app.py
+python -m streamlit run app.py
 ```
