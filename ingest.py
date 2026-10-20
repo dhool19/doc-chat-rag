@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import chromadb
 from langchain_community.document_loaders import(
     PyPDFLoader,
 )
@@ -36,6 +36,12 @@ def load_docs():
 def build_vector_store():
     documents = load_docs()
     print(f"Loaded docs {len(documents)} pages.")
+
+    client = chromadb.PersistentClient(path=PERSIST_DIRECTORY)
+    existing=[c.name for c in client.list_collections()]
+    if COLLECTION_NAME in existing:
+        client.delete_collection(COLLECTION_NAME)
+        print(f"Deleted existing collection: {COLLECTION_NAME}")
 
     text_splitters = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
